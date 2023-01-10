@@ -2,6 +2,7 @@ from typing import List, Tuple, Iterable, Optional, Set
 import time
 from pprint import pprint
 from boggle_board_randomizer import randomize_board as random_board, LETTERS
+import copy
 
 Board = List[List[str]]
 Path = List[Tuple[int, int]]
@@ -127,38 +128,21 @@ def find_length_n_paths(n: int, board: Board, words: Iterable[str]) -> List[Path
 
 def find_length_n_paths_helper(n, board, words, possible_moves_dict, coord, available_coords: List, cur_path: Path,
                                all_paths: List[Path]) -> Optional[List[Path]]:
-    if len(cur_path) == CUTOFF_SIZE:
-        if get_word_from_path(board, cur_path) not in words:
-            return
-    if len(cur_path) < CUTOFF_SIZE and len(cur_path) == n:
-        if get_word_from_path(board, cur_path) in words[SHORT_WORDS]:
+    if len(cur_path) == n:
+        if get_word_from_path(board, cur_path) in words:
             all_paths.append(cur_path[:])
-            return
-    if len(cur_path) >= CUTOFF_SIZE:
-        # print(cur_path)
-        word_start = get_word_from_path(board, cur_path)[:CUTOFF_SIZE]
-        if len(cur_path) == n:
-            if get_word_from_path(board, cur_path) in words[word_start]:
-                all_paths.append(cur_path[:])
-                return
-            return
-        else:
-            if word_start not in words:
-                return
-    # if len(cur_path) == n:
-    #     if get_word_from_path(board, cur_path) in words:
-    #         all_paths.append(cur_path[:])
-    #     return
+        return
 
     for move in possible_moves_dict[coord]:
-        if move not in available_coords:
+        if move not in available_coords[:]:
             continue
         else:
-            available_coords.remove(move)
+            copied_coords = copy.deepcopy(available_coords)
+            copied_coords.remove(move)
             cur_path.append(move)
             find_length_n_paths_helper(n, board, words, possible_moves_dict, move, available_coords, cur_path,
                                        all_paths)
-            available_coords.append(move)
+            # available_coords.append(move)
             # always path to remove is always the last element so pop() is O(1) and more efficent
             cur_path.pop()
     return all_paths
@@ -172,30 +156,30 @@ def max_score_paths(board: Board, words: Iterable[str]) -> List[Path]:
     pass
 
 
-# def valid_words_for_game():
-#     with open('boggle_dict.txt', 'r') as f:
-#         words_set = set(line.strip() for line in f.readlines())
-#     return words_set
-
 def valid_words_for_game():
-    words_dict = {SHORT_WORDS: set()}
-
     with open('boggle_dict.txt', 'r') as f:
-        for line in f.readlines():
-            line_s = line.strip()
-            if len(line_s) < CUTOFF_SIZE:
-                words_dict[SHORT_WORDS].add(line_s)
-                continue
-            line_sliced = line_s[:CUTOFF_SIZE]
-            if line_sliced in words_dict:
-                words_dict[line_sliced].add(line_s)
-            else:
-                words_dict[line_sliced] = set()
-                words_dict[line_sliced].add(line_s)
-
-    return words_dict
+        words_set = set(line.strip() for line in f.readlines())
+    return words_set
 
 
+# def valid_words_for_game():
+#     words_dict = {SHORT_WORDS: set()}
+#
+#     with open('boggle_dict.txt', 'r') as f:
+#         for line in f.readlines():
+#             line_s = line.strip()
+#             if len(line_s) < CUTOFF_SIZE:
+#                 words_dict[SHORT_WORDS].add(line_s)
+#                 continue
+#             line_sliced = line_s[:CUTOFF_SIZE]
+#             if line_sliced in words_dict:
+#                 words_dict[line_sliced].add(line_s)
+#             else:
+#                 words_dict[line_sliced] = set()
+#                 words_dict[line_sliced].add(line_s)
+#
+#     return words_dict
+#
 # print(valid_words_for_game()[SHORT_WORDS])
 # print(valid_words_for_game())
 
@@ -211,18 +195,11 @@ boardd = [['A', 'B', 'C', 'D'],
           ['P', 'O', 'N', 'E'],
           ['K', 'L', 'M', 'F'],
           ['J', 'I', 'H', 'G']]
-boardc = [['A', 'E', 'A', 'N', 'E', 'G'],
-          ['A', 'H', 'S', 'P', 'C', 'O'],
-          ['A', 'S', 'P', 'F', 'F', 'K'],
-          ['O', 'B', 'J', 'O', 'A', 'B'],
-          ['I', 'O', 'T', 'M', 'U', 'C'],
-          ['R', 'Y', 'V', 'D', 'E', 'L']]
-
 rand = random_board(LETTERS)
 pprint(rand)
 # print(valid_words_for_game()["ABCD"])
 # print(find_length_n_paths(16, random_board(), valid_words_for_game()))
-print(find_length_n_paths(16, rand, valid_words_for_game()))
+print(find_length_n_paths(6, rand, valid_words_for_game()))
 
 # regular check
 # word = get_word_from_path(board, cur_path)
