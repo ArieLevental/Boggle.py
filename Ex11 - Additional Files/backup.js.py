@@ -244,3 +244,55 @@ print(find_length_n_paths(6, rand, valid_words_for_game()))
 # print(get_word_from_path(test_board, [(1, 1), (2, 1), (3, 1)]))
 # print(is_valid_path(test_board, invalid_path_1, []))
 # print(is_valid_path(test_board, invalid_path_2, []))
+
+@timeit
+def max_score_paths(board: Board, words: Iterable[str]) -> Dict[str, Path]:
+    available_coords = board_coordinates(board)
+    possible_moves_dict = possible_moves(available_coords)
+    # List of legal paths with length of n to be returned
+    # checking for possible paths for each board coordinate as a starting point
+    final_dict = dict()
+    available_coords_copy = available_coords[:]
+    for n in range(16, 1, -1):
+        for coord in available_coords_copy:
+            available_coords.remove(coord)
+            max_score_paths_helper(n, board, words, possible_moves_dict, coord, available_coords, list(), final_dict)
+            available_coords.append(coord)
+    return final_dict
+
+
+def max_score_paths_helper(n, board, words, possible_moves_dict, coord, available_coords: List, cur_path: Path,
+                           final_dict: Dict[str, Path]) -> Optional[Dict[str, Path]]:
+    current_word = get_word_from_path(board, cur_path)
+    # if current word is already in dict, we have a better score path and no need for further actions
+    if current_word in final_dict:
+        return
+    if len(cur_path) == WORDS_PREFIX:
+        if current_word not in words:
+            return
+    if len(cur_path) < WORDS_PREFIX and len(cur_path) == n:
+        if current_word in words[SHORT_WORDS]:
+            final_dict[current_word] = cur_path[:]
+            return
+    if len(cur_path) >= WORDS_PREFIX:
+        # print(cur_path)
+        word_start = current_word[:WORDS_PREFIX]
+        if len(cur_path) == n:
+            if current_word in words[word_start]:
+                final_dict[current_word] = cur_path[:]
+                return
+            return
+        else:
+            if word_start not in words:
+                return
+    for move in possible_moves_dict[coord]:
+        if move not in available_coords:
+            continue
+        else:
+            available_coords.remove(move)
+            cur_path.append(move)
+            max_score_paths_helper(n, board, words, possible_moves_dict, coord, available_coords, cur_path, final_dict)
+            available_coords.append(move)
+            # always path to remove is always the last element so pop() is O(1) and more efficent
+            cur_path.pop()
+    return final_dict
