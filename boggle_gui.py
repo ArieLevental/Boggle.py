@@ -146,7 +146,7 @@ class BoggleGUI:
             return
 
     def reset_timer(self):
-        self._current_time = 5
+        self._current_time = 180
 
     # def _countdown(self, count):
     #     self._timer['text'] = str(count)

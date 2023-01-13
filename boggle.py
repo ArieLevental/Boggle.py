@@ -15,12 +15,6 @@ import random
 from typing import List
 
 
-# TODO:
-#       * Reset timer (theres a function at gui, move to controller)
-#       * Reset found word (move the logic to controller, cause model have this list already)
-#   - highlight current path
-#   - disable all buttons except start
-
 class BoggleController:
     pygame.mixer.init()
 
@@ -132,24 +126,8 @@ class BoggleController:
 
 
     def party_action(self):
-        # self._gui._party_mode = 1
         self.play_sound("media/wow.mp3")
         self._gui.party_mode_activated()
-        # # self.play_sound("media/cute_song.mp3")
-        # for cube in self._gui._cubes:
-        #     cube["bg"] = self._gui.random_color()
-        #     # cube.bind("<Enter>")
-        #     # cube.bind("<Leave>")
-        # for button in self._gui._buttons.values():
-        #     button["bg"] = self._gui.random_color()
-        # self._gui._found_words["bg"] = self._gui.random_color()
-        # self._gui._buttons["PARTY"]["image"] = self._gui.meme
-        # self._gui._display_label["bg"] = self._gui.random_color()
-
-
-    # def random_color(self):
-    #     hex_color = ["#" + ''.join([random.choice('ABCDEF0123456789') for _ in range(6)])]
-    #     return hex_color
 
     def create_start_reset_action(self):
         self._gui._buttons["START"].configure(command=self.start_action)
