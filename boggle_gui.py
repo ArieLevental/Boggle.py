@@ -41,8 +41,7 @@ class BoggleGUI:
         # frame for sidebar
         self._sidebar_frame = tki.Frame(self._outer_frame)
         self._sidebar_frame.pack(side=tki.RIGHT, fill=tki.BOTH, expand=True)
-        # self._found_words = tki.Text(self._sidebar_frame, font=("Courier", 15), yscrollcommand=v.set,
-        #                              bg=REGULAR_COLOR_1, width=5, relief="ridge")
+
         self._create_sidebar()
         self._initialize_word_scroll_box()
         self._found_words.pack(side=tki.BOTTOM, fill=tki.BOTH, expand=True)
@@ -86,37 +85,9 @@ class BoggleGUI:
     def get_cube_chars(self) -> List[str]:
         return list(self._cubes.keys())
 
-    # def _create_buttons_in_lower_frame(self) -> None:
-    #     for i in range(4):
-    #         tki.Grid.columnconfigure(self._lower_frame, i, weight=1)  # type: ignore
-    #
-    #     for i in range(5):
-    #         tki.Grid.rowconfigure(self._lower_frame, i, weight=1)  # type: ignore
-    #
-    #     self._make_button("C", 0, 0)
-    #     self._make_button("/", 0, 1)
-    #     self._make_button("*", 0, 2)
-    #     self._make_button("-", 0, 3)
-    #     self._make_button("7", 1, 0)
-    #     self._make_button("8", 1, 1)
-    #     self._make_button("9", 1, 2)
-    #     self._make_button("+", 1, 3, rowspan=2)
-    #     self._make_button("4", 2, 0)
-    #     self._make_button("5", 2, 1)
-    #     self._make_button("6", 2, 2)
-    #     self._make_button("1", 3, 0)
-    #     self._make_button("2", 3, 1)
-    #     self._make_button("3", 3, 2)
-    #     self._make_button("=", 3, 3, rowspan=2)
-    #     self._make_button("0", 4, 0, columnspan=2)
-    #     self._make_button(".", 4, 2)
-
     def _create_sidebar(self) -> None:
-        # tki.Grid.columnconfigure(self._sidebar_frame, 1, weight=1)  # type: ignore
-        # timer
         self._score = self._make_score()
         self._timer = self._make_timer()
-        # list of found words
 
         self._countdown()
 
@@ -148,14 +119,6 @@ class BoggleGUI:
     def reset_timer(self):
         self._current_time = 180
 
-    # def _countdown(self, count):
-    #     self._timer['text'] = str(count)
-    #     if count > 0:
-    #         # call countdown again after 1000ms (1s)
-    #         self._main_window.after(1000, self._countdown, count - 1)
-    #     if count == 0:
-    #         return
-
     def _update_found_words(self, word_list):
         # word_label = tki.Label(self._sidebar_frame, font=("Courier", 15), bg=REGULAR_COLOR_1, width=5, relief="ridge",
         #                        text=word)
@@ -165,8 +128,6 @@ class BoggleGUI:
         for word in word_list:
             self._found_words.insert("2.0", "- " + word + "\n")
         self._found_words.configure(state=tki.DISABLED)
-
-        # word_label.pack(side=tki.BOTTOM, fill=tki.BOTH, expand=True)
 
     def _initialize_word_scroll_box(self):
         scrollbar = tki.Scrollbar(self._sidebar_frame, orient='vertical')
@@ -233,9 +194,6 @@ class BoggleGUI:
         self._make_cube("N", 3, 1)
         self._make_cube("O", 3, 2)
         self._make_cube("P", 3, 3)
-        # self._make_button("=", 3, 3, rowspan=2)
-        # self._make_button("0", 4, 0, columnspan=2)
-        # self._make_button(".", 4, 2)
 
     def _make_cube(self, cube_chars: str, row: int, col: int, rowspan: int = 1, columnspan: int = 1) -> tki.Button:
         cube = tki.Button(self._lower_frame, text=cube_chars, **BUTTON_STYLE)
@@ -326,10 +284,3 @@ class BoggleGUI:
         rgb = 255, max(208 - 13 * multipler, 0), max(208 - 13 * multipler, 0)
         rgb_to_hex = "#" + '%02x%02x%02x' % rgb
         return rgb_to_hex
-
-# app = BoggleGUI()
-# app._insert_found_word("TEST")
-# app._insert_found_word("a")
-# app._insert_found_word("b")
-# app._insert_found_word("c")
-# app.run()

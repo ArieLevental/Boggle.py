@@ -1,12 +1,13 @@
+from boggle_board_randomizer import randomize_board, LETTERS
+
 PATH_TO_WORD_BANK = 'boggle_dict.txt'
 INITIAL_SCORE = 0
 SCORE_POW_MULTIPLIER = 2
 INITIAL_GAME_BOARD = [['P', 'L', 'A', 'Y'],
-                     ['T', 'H', 'I', 'S'],
-                     ['W', 'O', 'R', 'D'],
-                     ['G', 'A', 'M', 'E'],
-                     ]
-from boggle_board_randomizer import randomize_board, LETTERS
+                      ['T', 'H', 'I', 'S'],
+                      ['W', 'O', 'R', 'D'],
+                      ['G', 'A', 'M', 'E'],
+                      ]
 
 
 ################### MOVE TO IMPORT OR STATIC METHODS ##################
@@ -42,7 +43,7 @@ def generate_board_coords(board):
 
 
 ################### MOVE TO IMPORT OR STATIC METHODS ##################
-#TODO DELETE THIS
+# TODO DELETE THIS
 
 class BoggleBoard:
     """
@@ -65,7 +66,7 @@ class BoggleBoard:
         if len(set(path)) != len(path):
             return False
         # iterating through each step in path
-        for step in range(len(path)-1):
+        for step in range(len(path) - 1):
             # for each coord, check if the next one is in its possible moves
             if path[step + 1] not in self.__possible_moves_dict[path[step]]:
                 return False
@@ -98,12 +99,6 @@ class BoggleBoard:
     def get_found_words(self):
         return [path_word_pair[1] for path_word_pair in self.__found_words]
 
-    # def get_found_words(self):  # get the list of found words
-    #     words_to_represent = list()
-    #     for path_word_pair in self.__found_words:
-    #         words_to_represent.append(path_word_pair[1])
-    #     return words_to_represent
-
     def _update_current_word(self, char):  # update the currently constructed word
         self.__current_word += char
 
@@ -127,13 +122,13 @@ class BoggleBoard:
     def _reroll_board(self):  # re-roll and change to another rand-board
         self.__board = randomize_board(LETTERS)
 
-    def _repeated_word(self): # if this word with this path was found
+    def _repeated_word(self):  # if this word with this path was found
         for path_word_pairs in self.__found_words:
             if path_word_pairs[1] == self.__current_word:
                 return True
         return False
 
-    def submit_word(self): # try and submit a word, if it is new and valid, return True, False otherwise
+    def submit_word(self):  # try and submit a word, if it is new and valid, return True, False otherwise
         if self.__current_word in self.__words_set and not self._repeated_word():
             word = self.__current_word
             self._update_score()
@@ -149,6 +144,3 @@ class BoggleBoard:
 
     def get_current_path(self):
         return self.__current_path[:]
-
-
-    #### BONUS FEATURES ? ####

@@ -1,7 +1,5 @@
 from typing import List, Tuple, Iterable, Optional, Callable, Dict
 from boggle_board_randomizer import randomize_board as random_board, LETTERS
-
-from pprint import pprint
 import time
 
 Board = List[List[str]]
@@ -238,76 +236,6 @@ def max_score_paths_helper(n, board, words, possible_moves_dict, coord, availabl
     # continue constructing the current path:
     return recursive_search_loop(n, board, words, possible_moves_dict, coord, available_coords, cur_path, final_dict,
                                  max_score_paths_helper)
-
-
-# @timeit
-# def max_score_paths(board: Board, words: Iterable[str]) -> Dict[str, Path]:
-#     """
-#     Given a board and a set of valid words, this function finds all legal paths on the board that forms valid words,
-#     where the length of the path is the maximum possible. The function returns a dictionary, where the key is the valid word
-#     formed by the path, and the value is the path itself represented as a list of tuples.
-#
-#     :param board: 2D list representing the Boggle board.
-#     :param words: An iterable of strings representing the valid words for the game.
-#     :return: A dictionary of string : list of tuples.
-#     """
-#     available_coords, possible_moves_dict, words = init_data(board, words)
-#     # List of legal paths with length of n to be returned
-#     # checking for possible paths for each board coordinate as a starting point
-#     final_dict = dict()
-#     for n in range(16, 0, -1):
-#         for coord in available_coords[:]:
-#             search_loop(n, board, words, possible_moves_dict, coord, available_coords, final_dict,
-#                         max_score_paths_helper)
-#     return final_dict
-#
-#
-# def max_score_paths_helper(n, board, words, possible_moves_dict, coord, available_coords: List, cur_path: Path,
-#                            final_dict: Dict[str, Path]) -> None:
-#     """
-#     This function will search for all paths of length n on the board, starting from given coord and using
-#     possible_moves_dict to navigate.
-#     If a path is a valid word, it will be added to the final_dict.
-#     If a path is of length n and not a valid word, it will be ignored.
-#     If a path is longer than n and not a valid word, the search will be stopped for that path.
-#     This function will be called recursively and will return None
-#
-#     :return: None, the final_dict will be updated within the function.
-#     """
-#     # if the len is at threshold, check if the word is in the dict
-#     if len(cur_path) == WORDS_PREFIX:
-#         if get_word_from_path(board, cur_path) not in words:
-#             return  # the word is not a key, no word resulting from it exists
-#     # if we reached length of n for sub-threshold lengths, check the dedicated word bank
-#     if len(cur_path) < WORDS_PREFIX and len(cur_path) == n:
-#         current_word = get_word_from_path(board, cur_path)
-#         # if current word is already in dict, we have a better score path and no need for further actions
-#         if current_word in final_dict:
-#             return
-#         if current_word in words[SHORT_WORDS]:
-#             final_dict[current_word] = cur_path[:]
-#             return  # the word is a valid sub-threshold word
-#     if len(cur_path) >= WORDS_PREFIX:
-#         # print(cur_path)
-#         current_word = get_word_from_path(board, cur_path)
-#         word_start = current_word[:WORDS_PREFIX]
-#         # if the word's prefix is not found in the dict, it won't result in a valid word
-#         if word_start not in words:
-#             return
-#         # if we also reached the length of n, check if the word exists in the relevant word bank
-#         if len(cur_path) == n:
-#             # if current word is already in dict, we have a better score path and no need for further actions
-#             if current_word in final_dict:
-#                 return
-#             word_start = current_word[:WORDS_PREFIX]
-#             if current_word in words[word_start]:
-#                 final_dict[current_word] = cur_path[:]
-#                 return
-#             return  # the word is not a valid n-length word
-#     # continue constructing the current path:
-#     return recursive_search_loop(n, board, words, possible_moves_dict, coord, available_coords, cur_path, final_dict,
-#                                  max_score_paths_helper)
-
 
 #############################################################
 #                                                           #

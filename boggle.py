@@ -5,17 +5,18 @@
 # EXERCISE : intro2cs1 ex11 2023
 # DESCRIPTION: This program runs the game of Boggle
 # STUDENTS WE DISCUSSED THE EXERCISE WITH: No-one
-# WEB PAGES WE USED:
+# WEB PAGES WE USED: Too many to count.
 #################################################################
+
 import boggle_gui
 import boggle_gui as gui
 import boggle_model as model
 import pygame
-import random
 from typing import List
 
 
 class BoggleController:
+    # pygame.mixer used to play soundeffects
     pygame.mixer.init()
 
     def __init__(self) -> None:
@@ -26,18 +27,6 @@ class BoggleController:
         self.create_undo_action()
         self.create_start_reset_action()
         self.create_party_action()
-
-        # for cube_text in self._gui.get_cube_chars():
-        #     action = self.create_cube_action(button_text)
-        #     # cube command
-        #     self._gui.set_button_command(cube_text, action)
-        # self._gui.set_display("hmmm")
-
-    # def create_cube_action(self):
-    #     def func() -> None:
-    #         # self._model.
-    #         self._gui.set_display(self._model.get_current_word())
-    #     return func
 
     def create_cube_action(self, char, coord):
         def action_func():
@@ -57,7 +46,6 @@ class BoggleController:
     def pick_action(self):
         word = self._model.submit_word()
         if word:
-            # self._gui._insert_found_word(word)
             self._gui._update_found_words(self._model.get_found_words())
             self._gui.set_score(self._model.get_score())
             self.play_sound("media/correct.mp3")
@@ -98,11 +86,9 @@ class BoggleController:
             cur_cube = self._gui._cubes[index]
             action = self.create_cube_action(char, board_coords[index])
             cur_cube["text"] = char
-            # cur_cube.coord = board_coords[index]
             cur_cube.configure(command=action)
 
     def start_action(self):
-        # self._gui._party_mode = 0
         self._gui._buttons["START"]["text"] = "RESET"
         self._model.reset_board()
         self._gui.set_display("WELCOME TO BOGGLE!")
@@ -119,11 +105,6 @@ class BoggleController:
                 cube["bg"] = boggle_gui.REGULAR_COLOR_2
             else:
                 cube["bg"] = boggle_gui.REGULAR_COLOR_1
-        # self._gui.set_clickable_state(1)
-        ################################## RESET PARTY:
-        # self._gui._display_label["bg"] = gui.REGULAR_COLOR_1
-        # self._gui._buttons["PARTY"]["image"] = ""
-
 
     def party_action(self):
         self.play_sound("media/wow.mp3")
@@ -152,4 +133,3 @@ class BoggleController:
 if __name__ == '__main__':
     boggle_game = BoggleController()
     boggle_game.run()
-    ...
