@@ -1,5 +1,13 @@
+#################################################################
+# FILE : ex11_utils.py
+# WRITERS : Arie Levental , Arie_Levental , 319142055
+#           Adir Barak , adir.barak, 207009739
+# EXERCISE : intro2cs1 ex11 2023
+# DESCRIPTION: This program runs the game of Boggle
+# STUDENTS WE DISCUSSED THE EXERCISE WITH: No-one
+# WEB PAGES WE USED: Too many to count.
+#################################################################
 from typing import List, Tuple, Iterable, Optional, Callable, Dict
-from boggle_board_randomizer import randomize_board as random_board, LETTERS
 import time
 
 Board = List[List[str]]
@@ -46,7 +54,7 @@ def is_valid_path(board: Board, path: Path, words: Iterable[str]) -> Optional[st
     possible_moves_dict = possible_moves(available_coords)
 
     # iterating through each step in path
-    for step in range(len(path) - 1):  # TODO minus 1 right?
+    for step in range(len(path) - 1):
         # if one of the coords is not on the board, return None
         if path[step] not in available_coords:
             return
@@ -237,6 +245,7 @@ def max_score_paths_helper(n, board, words, possible_moves_dict, coord, availabl
     return recursive_search_loop(n, board, words, possible_moves_dict, coord, available_coords, cur_path, final_dict,
                                  max_score_paths_helper)
 
+
 #############################################################
 #                                                           #
 #                     data functions                        #
@@ -394,89 +403,3 @@ def recursive_search_loop(n, board, words, possible_moves_dict, coord, available
             # always path to remove is always the last element so pop() is O(1) and more efficent
             cur_path.pop()
     return final_res
-
-
-# TODO: REMOVE, ONLY FOR TESTING
-def valid_words_for_game_set():
-    with open('boggle_dict.txt', 'r') as f:
-        words_to_set = set(line.strip() for line in f.readlines())
-    return words_to_set
-
-
-# TESTING ZONE
-
-# BOARDS
-# board_AAA = [['A', 'A', 'A', 'A'],
-#              ['A', 'A', 'A', 'A'],
-#              ['A', 'A', 'A', 'A'],
-#              ['A', 'A', 'A', 'A']]
-# board_ABC = [['A', 'B', 'C', 'D'],
-#              ['P', 'O', 'N', 'E'],
-#              ['K', 'L', 'M', 'F'],
-#              ['J', 'I', 'H', 'G']]
-# board_regular = [['L', 'E', 'T', 'Y'],
-#                  ['D', 'E', 'QU', 'N'],
-#                  ['W', 'P', 'T', 'E'],
-#                  ['A', 'B', 'L', 'P']]
-# board_fucked = [['L', 'E', 'T', 'Y'],
-#                 ['D', 'Z', 'QU', 'N'],
-#                 ['W', 'P', 'T', 'X'],
-#                 ['T', 'B', 'L', 'P']]
-# board_DOUBLE = [['A', 'B', 'C', 'D'],
-#                 ['P', 'OU', 'N', 'IE'],
-#                 ['K', 'L', 'M', 'F'],
-#                 ['J', 'AE', 'TH', 'AE']]
-# board_6on6 = [['A', 'E', 'A', 'N', 'E', 'G'],
-#               ['A', 'H', 'S', 'P', 'C', 'O'],
-#               ['A', 'S', 'P', 'F', 'F', 'K'],
-#               ['O', 'B', 'J', 'O', 'A', 'B'],
-#               ['I', 'O', 'T', 'M', 'U', 'C'],
-#               ['R', 'Y', 'V', 'D', 'E', 'L']]
-
-# board_random = random_board(LETTERS)
-# words_set = valid_words_for_game_set()
-# TEST BOARD
-# test_board = board_random
-# test_words = words_set
-failed_board = [['E', 'M', 'AB', 'O'],
-                ['IN', 'ON', 'AN', 'M'],
-                ['ST', 'R', 'U', 'TH'],
-                ['Y', 'ST', 'R', 'W']]
-
-# ADD SPECIFIC WORDS
-# test_words["ABCDEF"] = {"ABCDEFGHIJKLMNOP"}  # PREFIX 6 n = 16
-# test_words["AAAAAA"] = {"AAAAAAAAAAAAAAAA", "AAAAAAAAAAAAAA", "AAAAAAAAAAAA",
-#                         "AAAAAAAAAA", "AAAAAAAA", "AAAA", "AA", "A"}  # PREFIX 6 n = 16, 14, 12, 10, 8, 4, 2, 1
-# test_words["FJSSNEG"] = {"FJSSNEGCFOUL"}  # PREFIX 7, n = 12
-
-# PRINTING AREA
-
-# pprint(test_board)
-
-# results = find_length_n_paths(6, test_board, test_words)
-# results = find_length_n_words(5, test_board, test_words)
-# results = max_score_paths(failed_board, test_words)
-#
-# print(len(results))
-# print(results)
-
-# PRINT PATHS FOUND
-# print(results)
-
-# CHECK FOR DUPLICATES
-# for index, result in enumerate(results):
-#     for res in results[index + 1:]:
-#         if res == result:
-#             print(f"OH BOY! {res} have a duplicate")
-
-# PRINT WORDS FOUND
-# print("************* Words found: *************")
-# for res in results:
-#     print(get_word_from_path(test_board, res), res)
-
-# PRINT WORDS FROM WORDS BANK WITH SPECIFIC LENGTH
-# with open('boggle_dict.txt', 'r') as f:
-#     words_set = set(line.strip() for line in f.readlines())
-#     for word in words_set:
-#         if len(word) == 16:
-#             print(word)
